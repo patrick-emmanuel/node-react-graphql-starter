@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormInput } from '../../helper/customHooks';
+import { useFormInput } from '../../utils/customHooks';
 
 
 const RegisterForm = ({ register, loading }) => {

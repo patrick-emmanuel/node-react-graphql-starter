@@ -34,13 +34,14 @@ services:
      - ./client:/usr/app
     depends_on:
      - api
+    ports:
+     - "9009:9009"
   prisma:
     image: prismagraphql/prisma:1.26
     restart: always
     ports:
      - "4466:4466"
     environment:
-      # PRISMA_MANAGEMENT_API_SECRET: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNTUwODMzMjI3LCJleHAiOjE1NTE0MzgwMjd9.c5WdayFgkmsxt8O9SkcwBSQdzwtavF3bxNUhpkl6CQQ
       PRISMA_ENDPOINT: http://prisma:4466
       PRISMA_CONFIG: |
         port: 4466

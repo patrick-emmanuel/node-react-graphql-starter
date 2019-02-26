@@ -9,8 +9,8 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloProvider } from 'react-apollo';
 
-import { getAuthToken } from './helper/auth';
-import { removeAuthToken } from './helper/auth';
+import { getAuthToken } from './utils/auth';
+import { removeAuthToken } from './utils/auth';
 import App from './App';
 
 const httpLink = new HttpLink({ uri: 'http://localhost:2015/api/graphql' });

@@ -9,7 +9,7 @@ import {
   setAuthToken,
   removeAuthToken,
   getAuthToken
-} from '../../helper/auth';
+} from '../../utils/auth';
 
 export const AuthContext = React.createContext({
   login: null,
@@ -38,7 +38,6 @@ const AuthProviderOperations = ({ children, history }) => {
   }
 
   const onError = (error) => {
-    console.log(error);
     logout();
   }
 

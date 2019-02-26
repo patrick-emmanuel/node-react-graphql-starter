@@ -12,7 +12,14 @@
     "eslint-plugin-react": "7.12.4",
     "jwt-decode": "2.2.0",
     "prettier-eslint-cli": "4.7.1",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "react-test-renderer": "^16.8.3",
+    "@storybook/react": "^4.1.13",
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-links": "^4.1.13",
+    "@storybook/addons": "^4.1.13",
+    "@babel/core": "^7.3.4",
+    "babel-loader": "^8.0.5"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.4.2",
@@ -51,7 +58,9 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "prettier": "prettier-eslint --write \"src/**/*.+(js|jsx)\"",
-    "prettier-dry-run": "prettier-eslint \"src/**/*.+(js|jsx)\" -l debug"
+    "prettier-dry-run": "prettier-eslint \"src/**/*.+(js|jsx)\" -l debug",
+    "storybook": "start-storybook -p 9009 -s public --ci",
+    "build-storybook": "build-storybook -s public"
   },
   "prettier": {
     "semi": false,

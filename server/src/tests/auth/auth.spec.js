@@ -69,6 +69,36 @@ describe('auth', function(){
     });
   });
 
+  describe('verifyUser: AuthPayload', () => {
+    it('verify user token', async () => {
+      const {
+        data: {
+          data: {
+            login: { 
+              token 
+            },
+          },
+        },
+      } = await userApi.login({
+        email: 'alice@prisma.io',
+        password: 'secret42',
+      });
+      const expectedResult = {
+        data: {
+          verifyUser: {
+            token: token,
+            user: {
+              email: 'alice@prisma.io',
+            }
+          },
+        },
+      };
+      const { data } = await userApi.verifyUser({ token });
+
+      expect(data).to.eql(expectedResult);
+    });
+  });
+
   after(() => {
     testServer.close();
   })

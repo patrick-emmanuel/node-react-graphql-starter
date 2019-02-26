@@ -81,44 +81,22 @@ export const signUp = async variables =>
     variables,
   });
 
-export const updateUser = async (variables, token) =>
-  axios.post(
-    API_URL,
-    {
-      query: `
-        mutation ($email: String!) {
-          updateUser(email: $email) {
+
+  export const verifyUser = async variables =>
+  axios.post(API_URL, {
+    query: `
+      mutation(
+        $token: String!
+      ) {
+        verifyUser(
+          token: $token,
+        ) {
+          token
+          user {
             email
           }
         }
-      `,
-      variables,
-    },
-    token
-      ? {
-        headers: {
-          'authorization': token,
-        },
       }
-      : null,
-  );
-
-export const deleteUser = async (variables, token) =>
-  axios.post(
-    API_URL,
-    {
-      query: `
-        mutation ($id: ID!) {
-          deleteUser(id: $id)
-        }
-      `,
-      variables,
-    },
-    token
-      ? {
-        headers: {
-          'authorization': token,
-        },
-      }
-      : null,
-  );
+    `,
+    variables,
+  });

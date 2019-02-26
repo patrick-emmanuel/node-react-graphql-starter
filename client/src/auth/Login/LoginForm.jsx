@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useFormInput } from '../../helper/customHooks';
+import { useFormInput } from '../../utils/customHooks';
 
 const LoginForm = ({ login, loading }) => {
 
