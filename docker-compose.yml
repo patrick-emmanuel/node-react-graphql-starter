@@ -1,0 +1,68 @@
+version: '3'
+services:
+  caddy:
+    build:
+      context: ./caddy/dev
+      dockerfile: dev.Dockerfile
+    volumes:
+     - caddy:/root/.caddy
+    env_file:
+     - ./.env/.production/.caddy
+    ports:
+     - "2015:2015"
+     - "443:443"
+    depends_on:
+     - client
+  api:
+    build: 
+     context: ./server
+     dockerfile: dev.Dockerfile
+    volumes:
+     - ./server:/usr/app
+    depends_on:
+     - prisma
+    expose:
+     - "4000"
+    environment:
+     APP_SECRET: secret
+     PRISMA_ENDPOINT: http://prisma:4466/api/dev
+  client:
+    build: 
+     context: ./client
+     dockerfile: dev.Dockerfile
+    volumes:
+     - ./client:/usr/app
+    depends_on:
+     - api
+  prisma:
+    image: prismagraphql/prisma:1.26
+    restart: always
+    ports:
+     - "4466:4466"
+    environment:
+      # PRISMA_MANAGEMENT_API_SECRET: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNTUwODMzMjI3LCJleHAiOjE1NTE0MzgwMjd9.c5WdayFgkmsxt8O9SkcwBSQdzwtavF3bxNUhpkl6CQQ
+      PRISMA_ENDPOINT: http://prisma:4466
+      PRISMA_CONFIG: |
+        port: 4466
+        # managementApiSecret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNTUwODMzMjI3LCJleHAiOjE1NTE0MzgwMjd9.c5WdayFgkmsxt8O9SkcwBSQdzwtavF3bxNUhpkl6CQQ
+        databases:
+          default:
+            connector: postgres
+            host: postgres-db
+            port: 5432
+            user: prisma
+            password: prisma
+            migrations: true
+    depends_on:
+     - postgres-db
+  postgres-db:
+    image: postgres
+    restart: always
+    environment:
+     POSTGRES_USER: prisma
+     POSTGRES_PASSWORD: prisma
+    volumes:
+     - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:
+  caddy: {}

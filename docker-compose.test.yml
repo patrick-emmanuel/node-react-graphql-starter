@@ -1,0 +1,6 @@
+version: '3'
+services:
+  api:
+   command: npm run test:run-test
+   environment:
+    PRISMA_ENDPOINT: http://prisma:4466/api/test

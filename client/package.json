@@ -1,0 +1,61 @@
+{
+  "name": "react-apollo-instagram-example",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "babel-eslint": "7.2.3",
+    "eslint": "4.19.1",
+    "eslint-config-react-app": "2.1.0",
+    "eslint-plugin-flowtype": "2.50.3",
+    "eslint-plugin-import": "2.16.0",
+    "eslint-plugin-jsx-a11y": "5.1.1",
+    "eslint-plugin-react": "7.12.4",
+    "jwt-decode": "2.2.0",
+    "prettier-eslint-cli": "4.7.1",
+    "react-scripts": "1.1.5"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.4.2",
+    "apollo-client": "^2.4.12",
+    "apollo-link": "^1.2.8",
+    "apollo-link-error": "^1.1.7",
+    "apollo-link-http": "^1.5.11",
+    "apollo-link-ws": "1.0.14",
+    "apollo-utilities": "1.1.2",
+    "babel-cli": "6.26.0",
+    "eslint-config-prettier": "2.10.0",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-prettier": "2.7.0",
+    "graphql": "0.13.2",
+    "graphql-resolvers": "^0.3.2",
+    "graphql-tag": "2.10.1",
+    "graphql-tools": "^4.0.4",
+    "morgan": "^1.9.1",
+    "prettier": "^1.16.4",
+    "react": "^16.8.3",
+    "react-apollo": "2.4.1",
+    "react-dom": "^16.8.3",
+    "react-modal": "3.8.1",
+    "react-router-dom": "4.3.1",
+    "secure-web-storage": "^1.0.2",
+    "subscriptions-transport-ws": "0.9.15",
+    "tachyons": "4.11.1"
+  },
+  "scripts": {
+    "precommit": "npm run lint && npm run flow",
+    "flow": "flow",
+    "lint": "eslint .",
+    "start": "react-scripts start",
+    "server": "npm start --prefix server",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "prettier": "prettier-eslint --write \"src/**/*.+(js|jsx)\"",
+    "prettier-dry-run": "prettier-eslint \"src/**/*.+(js|jsx)\" -l debug"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}

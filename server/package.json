@@ -1,0 +1,36 @@
+{
+  "name": "bus-ticket",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon -e js,graphql -x babel-node src/index.js",
+    "start": "babel-node src/index.js",
+    "debug": "nodemon -e js,graphql -x node --inspect -r dotenv/config src/index.js",
+    "test:run-test": "mocha --require @babel/register 'src/tests/**/*.spec.js'"
+  },
+  "dependencies": {
+    "apollo-link-ws": "^1.0.14",
+    "apollo-server": "^2.4.0",
+    "apollo-server-express": "^2.4.0",
+    "axios": "^0.18.0",
+    "bcryptjs": "2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "graphql": "^14.1.1",
+    "graphql-resolvers": "^0.3.2",
+    "jsonwebtoken": "8.4.0",
+    "morgan": "^1.9.1",
+    "prisma-client-lib": "1.26.4",
+    "subscriptions-transport-ws": "^0.9.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
+    "chai": "^4.2.0",
+    "dotenv": "6.2.0",
+    "mocha": "^5.2.0",
+    "nodemon": "1.18.10",
+    "prisma": "1.22.1"
+  }
+}
