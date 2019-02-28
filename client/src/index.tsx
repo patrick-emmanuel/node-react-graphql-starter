@@ -9,9 +9,11 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloProvider } from 'react-apollo';
 
-import { getAuthToken } from './utils/auth';
-import { removeAuthToken } from './utils/auth';
+import { getAuthToken } from './auth/utils';
+import { removeAuthToken } from './auth/utils';
 import App from './App';
+import 'tachyons';
+import './index.css';
 
 const httpLink = new HttpLink({ uri: 'http://localhost:2015/api/graphql' });
 
@@ -20,31 +22,32 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: false,
     connectionParams: {
-      Authorization: `Bearer ${getAuthToken()}`,
-    },
-  },
+      Authorization: `Bearer ${getAuthToken()}`
+    }
+  }
 });
-
 
 const middlewareLink = new ApolloLink((operation, forward) => {
   const tokenValue = getAuthToken();
   operation.setContext({
     headers: {
-      Authorization: tokenValue ? `Bearer ${tokenValue}` : '',
-    },
+      Authorization: tokenValue ? `Bearer ${tokenValue}` : ''
+    }
   });
-  return forward(operation)
+  return forward ? forward(operation) : null;
 });
 
 // authenticated httplink
-const httpLinkAuth = middlewareLink.concat(httpLink)
+const httpLinkAuth = middlewareLink.concat(httpLink);
 
 const link = split(
   // split based on operation type
   ({ query }) => {
-    const definition = getMainDefinition(query)
-    return definition.kind === 'OperationDefinition' &&
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
       definition.operation === 'subscription'
+    );
   },
   wsLink,
   httpLinkAuth
@@ -64,7 +67,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) {
     console.log('Network error', networkError);
 
-    if (networkError.statusCode === 401) {
+    if (networkError.name === 'Unauthorized') {
       removeAuthToken();
     }
   }
@@ -74,11 +77,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const client = new ApolloClient({
   link: ApolloLink.from([errorLink, link]),
   cache: new InMemoryCache(),
-  connectToDevTools: true,
+  connectToDevTools: true
 });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />
-  </ApolloProvider>, document.getElementById('root')
+  </ApolloProvider>,
+  document.getElementById('root')
 );

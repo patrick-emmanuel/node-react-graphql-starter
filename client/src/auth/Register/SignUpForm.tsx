@@ -1,23 +1,28 @@
 import React from 'react';
 import { useFormInput } from '../../utils/customHooks';
+import { SignUpVariables } from '../types/SignUp';
 
+interface SignUpFormProps {
+  signUp: (variables: SignUpVariables) => void;
+  loading: boolean;
+}
 
-const RegisterForm = ({ register, loading }) => {
-
+const SignUpForm: React.StatelessComponent<SignUpFormProps> = ({
+  signUp,
+  loading
+}) => {
   const email = useFormInput('');
   const name = useFormInput('');
   const password = useFormInput('');
 
-  const handleRegister = (e) => {
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    register({
-      variables: {
-        name: name.value,
-        email: email.value,
-        password: password.value
-      }
+    signUp({
+      name: name.value,
+      email: email.value,
+      password: password.value
     });
-  }
+  };
 
   return (
     <section>
@@ -32,14 +37,16 @@ const RegisterForm = ({ register, loading }) => {
         </div>
         <div>
           <label>Password (6 minimum characters)</label>
-          <input type="password" minLength="6" name="password" {...password} />
+          <input type="password" minLength={6} name="password" {...password} />
         </div>
         <div>
-          <button disabled={loading}>{loading ? 'Registering...' : 'Register'}</button>
+          <button disabled={loading}>
+            {loading ? 'Loading...' : 'Sign up'}
+          </button>
         </div>
       </form>
     </section>
   );
-}
+};
 
-export default RegisterForm;
+export default SignUpForm;

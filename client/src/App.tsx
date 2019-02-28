@@ -6,7 +6,7 @@ import Register from './auth/Register';
 import Home from './home';
 
 import AuthProvider from './auth/AuthProvider';
-import { PrivateRoute } from './utils/auth';
+import { PrivateRoute } from './auth/utils';
 
 class App extends Component {
   render() {

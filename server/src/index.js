@@ -4,9 +4,9 @@ const morgan = require('morgan');
 const cors = require('cors');
 const http = require('http');
 const { ApolloServer } = require('apollo-server-express');
-const resolvers = require('./resolvers')
-const schema = require('./schema')
 const { prisma } = require('./generated/prisma-client');
+const resolvers = require('./resolvers')
+import typeDefs from './schema'
 
 const app = express();
 
@@ -17,7 +17,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const server = new ApolloServer({
   introspection: true,
   playground: !isProduction,
-  typeDefs: schema,
+  typeDefs,
   resolvers,
   context: async ({ req }) => {
     return {

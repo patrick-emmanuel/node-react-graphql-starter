@@ -1,23 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useFormInput } from '../../utils/customHooks';
+import { LoginVariables } from '../types/Login';
 
-const LoginForm = ({ login, loading }) => {
+interface LoginFormProps {
+  login: (variables: LoginVariables) => void;
+  loading: boolean;
+}
 
+const LoginForm: React.StatelessComponent<LoginFormProps> = ({
+  login,
+  loading
+}) => {
   const email = useFormInput('');
   const password = useFormInput('');
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
     login({
-      variables: {
-        email: email.value,
-        password: password.value
-      }
+      email: email.value,
+      password: password.value
     });
-  }
+  };
 
   return (
     <section>
@@ -28,16 +32,18 @@ const LoginForm = ({ login, loading }) => {
         </div>
         <div>
           <label>Password</label>
-          <input type="password" minLength="6" name="password" {...password} />
+          <input type="password" minLength={6} name="password" {...password} />
         </div>
         <div>
-          <button disabled={loading}>{loading ? 'Loggin in...' : 'Login'}</button>
+          <button disabled={loading}>
+            {loading ? 'Loggin in...' : 'Login'}
+          </button>
         </div>
         <span>or</span>
         <Link to="/register">Register</Link>
       </form>
     </section>
   );
-}
+};
 
 export default LoginForm;

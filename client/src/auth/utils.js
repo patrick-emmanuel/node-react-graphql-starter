@@ -1,18 +1,17 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-
 export const setAuthToken = token => {
   localStorage.setItem('token', token);
-}
+};
 
 export const removeAuthToken = () => {
   localStorage.removeItem('token');
-}
+};
 
 export const getAuthToken = () => {
   return localStorage.getItem('token');
-}
+};
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
   const token = getAuthToken();
@@ -25,14 +24,14 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
             <Component {...props} />
           </div>
         ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location }
-              }}
-            />
-          )
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
+        )
       }
     />
   );
-}
+};

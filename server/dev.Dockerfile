@@ -4,7 +4,7 @@ ENV NODE_ENV=development
 
 WORKDIR /usr/app
 
-COPY package*.json .
+COPY package*.json ./
 RUN npm install && npm install -g prisma
 
 COPY . .
