@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useFormInput } from '../../utils/customHooks';
 import { LoginVariables } from '../types/Login';
 
-interface LoginFormProps {
+export interface LoginFormProps {
   login: (variables: LoginVariables) => void;
   loading: boolean;
 }

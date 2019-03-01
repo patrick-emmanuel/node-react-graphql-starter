@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots auth / Login  default 1`] = `
+<div>
+  <section>
+    <form
+      onSubmit={[Function]}
+    >
+      <div>
+        <label>
+          Email
+        </label>
+        <input
+          name="email"
+          onChange={[Function]}
+          type="email"
+          value=""
+        />
+      </div>
+      <div>
+        <label>
+          Password
+        </label>
+        <input
+          minLength={6}
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div>
+        <button
+          disabled={false}
+        >
+          Login
+        </button>
+      </div>
+      <span>
+        or
+      </span>
+      <a
+        href="/register"
+        onClick={[Function]}
+      >
+        Register
+      </a>
+    </form>
+  </section>
+</div>
+`;
+
+exports[`Storyshots auth / Login  on loading 1`] = `
+<div>
+  <section>
+    <form
+      onSubmit={[Function]}
+    >
+      <div>
+        <label>
+          Email
+        </label>
+        <input
+          name="email"
+          onChange={[Function]}
+          type="email"
+          value=""
+        />
+      </div>
+      <div>
+        <label>
+          Password
+        </label>
+        <input
+          minLength={6}
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div>
+        <button
+          disabled={true}
+        >
+          Loggin in...
+        </button>
+      </div>
+      <span>
+        or
+      </span>
+      <a
+        href="/register"
+        onClick={[Function]}
+      >
+        Register
+      </a>
+    </form>
+  </section>
+</div>
+`;

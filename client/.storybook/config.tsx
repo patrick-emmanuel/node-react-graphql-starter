@@ -1,11 +1,17 @@
-import { configure } from '@storybook/react';
-import '../src/index.css';
-import 'tachyons'
+import React from "react";
+import { configure, addDecorator } from "@storybook/react";
+import { BrowserRouter as Router } from "react-router-dom";
 
-const req = require.context('../src/stories', true, /.stories.tsx$/);
+import "../src/index.css";
+import "tachyons";
+
+addDecorator(story => (
+  <Router>
+    <div>{story()}</div>
+  </Router>
+));
 
 function loadStories() {
-  req.keys().forEach(req);
+  require('../src/stories/auth/Login/LoginForm.stories');
 }
-
 configure(loadStories, module);

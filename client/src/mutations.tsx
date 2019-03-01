@@ -15,7 +15,7 @@ export interface TypedMutationInnerProps<TData, TVariables> {
   ) => React.ReactNode;
   onCompleted?: (data: TData) => void;
   onError?: (error: ApolloError) => void;
-  variables?: any;
+  variables?: any; // fix the right type
 }
 
 export function TypedMutation<TData, TVariables>(
