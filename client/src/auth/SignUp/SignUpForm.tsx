@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormInput } from '../../utils/customHooks';
 import { SignUpVariables } from '../types/SignUp';
 
-interface SignUpFormProps {
+export interface SignUpFormProps {
   signUp: (variables: SignUpVariables) => void;
   loading: boolean;
 }

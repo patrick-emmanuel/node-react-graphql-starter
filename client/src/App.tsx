@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Login from './auth/Login';
-import Register from './auth/Register';
+import SignUp from './auth/SignUp';
 import Home from './home';
 
 import AuthProvider from './auth/AuthProvider';
@@ -15,7 +15,7 @@ class App extends Component {
         <AuthProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
+            <Route exact path="/signup" component={SignUp} />
             <PrivateRoute exact path="/" component={Home} />
           </Switch>
         </AuthProvider>

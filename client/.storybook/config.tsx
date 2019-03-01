@@ -12,6 +12,8 @@ addDecorator(story => (
 ));
 
 function loadStories() {
+  // auth
   require('../src/stories/auth/Login/LoginForm.stories');
+  require('../src/stories/auth/SignUp/SignUpForm.stories');
 }
 configure(loadStories, module);

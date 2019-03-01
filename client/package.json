@@ -57,8 +57,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:docker": "docker-compose exec client npm run test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public --ci",
+    "storybook:docker": "docker-compose exec client npm run storybook",
     "build-storybook": "build-storybook -s public",
     "build-types": "apollo client:codegen --target=typescript types --globalTypesFile=src/types/globalTypes.ts"
   },

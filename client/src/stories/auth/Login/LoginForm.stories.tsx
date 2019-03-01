@@ -7,6 +7,6 @@ const loginProps: LoginFormProps = {
   login: (): any => undefined
 };
 
-storiesOf('auth / Login ', module)
+storiesOf('auth / Login / LoginForm', module)
   .add('default', () => <LoginForm {...loginProps} />)
   .add('on loading', () => <LoginForm {...loginProps} loading />);

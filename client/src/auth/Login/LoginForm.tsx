@@ -40,7 +40,7 @@ const LoginForm: React.StatelessComponent<LoginFormProps> = ({
           </button>
         </div>
         <span>or</span>
-        <Link to="/register">Register</Link>
+        <Link to="/signup">Register</Link>
       </form>
     </section>
   );
