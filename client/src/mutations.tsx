@@ -32,7 +32,12 @@ export function TypedMutation<TData, TVariables>(
     <StrictTypedMutation
       mutation={mutation}
       onCompleted={onCompleted}
-      onError={onError}
+      onError={err => {
+        // Do toastr here.
+        if (onError) {
+          onError(err);
+        }
+      }}
       variables={variables}
       update={update}
     >
