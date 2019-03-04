@@ -11,8 +11,6 @@ type Mutation {
     login(email: String!, password: String!): AuthPayload!
     createDraft(title: String!, content: String!): Post!
     verifyUser(token: String!): AuthPayload!
-    publish(id: ID!): Post!
-    deletePost(id: ID!): Post!
 }
 
 type Subscription {

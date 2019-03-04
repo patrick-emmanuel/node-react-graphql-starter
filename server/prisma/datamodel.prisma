@@ -1,17 +1,23 @@
-type Post {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  published: Boolean! @default(value: "false")
-  title: String!
-  content: String!
-  author: User!
-}
-
 type User {
   id: ID! @unique
   email: String! @unique
   password: String!
   name: String!
-  posts: [Post!]!
+  userRoles: [UserRole!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserRole {
+  id: ID! @unique
+  user: User!
+  role: Role!
+}
+
+type Role {
+  id: ID! @unique
+  name: String! @unique
+  userRoles: [UserRole!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }

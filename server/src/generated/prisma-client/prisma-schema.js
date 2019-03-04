@@ -1,9 +1,13 @@
 module.exports = {
-        typeDefs: /* GraphQL */ `type AggregatePost {
+        typeDefs: /* GraphQL */ `type AggregateRole {
   count: Int!
 }
 
 type AggregateUser {
+  count: Int!
+}
+
+type AggregateUserRole {
   count: Int!
 }
 
@@ -16,18 +20,23 @@ scalar DateTime
 scalar Long
 
 type Mutation {
-  createPost(data: PostCreateInput!): Post!
-  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
-  updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
-  upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
-  deletePost(where: PostWhereUniqueInput!): Post
-  deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createRole(data: RoleCreateInput!): Role!
+  updateRole(data: RoleUpdateInput!, where: RoleWhereUniqueInput!): Role
+  updateManyRoles(data: RoleUpdateManyMutationInput!, where: RoleWhereInput): BatchPayload!
+  upsertRole(where: RoleWhereUniqueInput!, create: RoleCreateInput!, update: RoleUpdateInput!): Role!
+  deleteRole(where: RoleWhereUniqueInput!): Role
+  deleteManyRoles(where: RoleWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createUserRole(data: UserRoleCreateInput!): UserRole!
+  updateUserRole(data: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole
+  upsertUserRole(where: UserRoleWhereUniqueInput!, create: UserRoleCreateInput!, update: UserRoleUpdateInput!): UserRole!
+  deleteUserRole(where: UserRoleWhereUniqueInput!): UserRole
+  deleteManyUserRoles(where: UserRoleWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -47,206 +56,114 @@ type PageInfo {
   endCursor: String
 }
 
-type Post {
+type Query {
+  role(where: RoleWhereUniqueInput!): Role
+  roles(where: RoleWhereInput, orderBy: RoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Role]!
+  rolesConnection(where: RoleWhereInput, orderBy: RoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RoleConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  userRole(where: UserRoleWhereUniqueInput!): UserRole
+  userRoles(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserRole]!
+  userRolesConnection(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserRoleConnection!
+  node(id: ID!): Node
+}
+
+type Role {
   id: ID!
+  name: String!
+  userRoles(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserRole!]
   createdAt: DateTime!
   updatedAt: DateTime!
-  published: Boolean!
-  title: String!
-  content: String!
-  author: User!
 }
 
-type PostConnection {
+type RoleConnection {
   pageInfo: PageInfo!
-  edges: [PostEdge]!
-  aggregate: AggregatePost!
+  edges: [RoleEdge]!
+  aggregate: AggregateRole!
 }
 
-input PostCreateInput {
-  published: Boolean
-  title: String!
-  content: String!
-  author: UserCreateOneWithoutPostsInput!
+input RoleCreateInput {
+  name: String!
+  userRoles: UserRoleCreateManyWithoutRoleInput
 }
 
-input PostCreateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  connect: [PostWhereUniqueInput!]
+input RoleCreateOneWithoutUserRolesInput {
+  create: RoleCreateWithoutUserRolesInput
+  connect: RoleWhereUniqueInput
 }
 
-input PostCreateWithoutAuthorInput {
-  published: Boolean
-  title: String!
-  content: String!
+input RoleCreateWithoutUserRolesInput {
+  name: String!
 }
 
-type PostEdge {
-  node: Post!
+type RoleEdge {
+  node: Role!
   cursor: String!
 }
 
-enum PostOrderByInput {
+enum RoleOrderByInput {
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  published_ASC
-  published_DESC
-  title_ASC
-  title_DESC
-  content_ASC
-  content_DESC
 }
 
-type PostPreviousValues {
+type RolePreviousValues {
   id: ID!
+  name: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  published: Boolean!
-  title: String!
-  content: String!
 }
 
-input PostScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  published: Boolean
-  published_not: Boolean
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  content: String
-  content_not: String
-  content_in: [String!]
-  content_not_in: [String!]
-  content_lt: String
-  content_lte: String
-  content_gt: String
-  content_gte: String
-  content_contains: String
-  content_not_contains: String
-  content_starts_with: String
-  content_not_starts_with: String
-  content_ends_with: String
-  content_not_ends_with: String
-  AND: [PostScalarWhereInput!]
-  OR: [PostScalarWhereInput!]
-  NOT: [PostScalarWhereInput!]
-}
-
-type PostSubscriptionPayload {
+type RoleSubscriptionPayload {
   mutation: MutationType!
-  node: Post
+  node: Role
   updatedFields: [String!]
-  previousValues: PostPreviousValues
+  previousValues: RolePreviousValues
 }
 
-input PostSubscriptionWhereInput {
+input RoleSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: PostWhereInput
-  AND: [PostSubscriptionWhereInput!]
-  OR: [PostSubscriptionWhereInput!]
-  NOT: [PostSubscriptionWhereInput!]
+  node: RoleWhereInput
+  AND: [RoleSubscriptionWhereInput!]
+  OR: [RoleSubscriptionWhereInput!]
+  NOT: [RoleSubscriptionWhereInput!]
 }
 
-input PostUpdateInput {
-  published: Boolean
-  title: String
-  content: String
-  author: UserUpdateOneRequiredWithoutPostsInput
+input RoleUpdateInput {
+  name: String
+  userRoles: UserRoleUpdateManyWithoutRoleInput
 }
 
-input PostUpdateManyDataInput {
-  published: Boolean
-  title: String
-  content: String
+input RoleUpdateManyMutationInput {
+  name: String
 }
 
-input PostUpdateManyMutationInput {
-  published: Boolean
-  title: String
-  content: String
+input RoleUpdateOneRequiredWithoutUserRolesInput {
+  create: RoleCreateWithoutUserRolesInput
+  update: RoleUpdateWithoutUserRolesDataInput
+  upsert: RoleUpsertWithoutUserRolesInput
+  connect: RoleWhereUniqueInput
 }
 
-input PostUpdateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  delete: [PostWhereUniqueInput!]
-  connect: [PostWhereUniqueInput!]
-  disconnect: [PostWhereUniqueInput!]
-  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
-  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
-  deleteMany: [PostScalarWhereInput!]
-  updateMany: [PostUpdateManyWithWhereNestedInput!]
+input RoleUpdateWithoutUserRolesDataInput {
+  name: String
 }
 
-input PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput!
-  data: PostUpdateManyDataInput!
+input RoleUpsertWithoutUserRolesInput {
+  update: RoleUpdateWithoutUserRolesDataInput!
+  create: RoleCreateWithoutUserRolesInput!
 }
 
-input PostUpdateWithoutAuthorDataInput {
-  published: Boolean
-  title: String
-  content: String
-}
-
-input PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  data: PostUpdateWithoutAuthorDataInput!
-}
-
-input PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  update: PostUpdateWithoutAuthorDataInput!
-  create: PostCreateWithoutAuthorInput!
-}
-
-input PostWhereInput {
+input RoleWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -261,6 +178,23 @@ input PostWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  userRoles_every: UserRoleWhereInput
+  userRoles_some: UserRoleWhereInput
+  userRoles_none: UserRoleWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -277,59 +211,20 @@ input PostWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  published: Boolean
-  published_not: Boolean
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  content: String
-  content_not: String
-  content_in: [String!]
-  content_not_in: [String!]
-  content_lt: String
-  content_lte: String
-  content_gt: String
-  content_gte: String
-  content_contains: String
-  content_not_contains: String
-  content_starts_with: String
-  content_not_starts_with: String
-  content_ends_with: String
-  content_not_ends_with: String
-  author: UserWhereInput
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+  AND: [RoleWhereInput!]
+  OR: [RoleWhereInput!]
+  NOT: [RoleWhereInput!]
 }
 
-input PostWhereUniqueInput {
+input RoleWhereUniqueInput {
   id: ID
-}
-
-type Query {
-  post(where: PostWhereUniqueInput!): Post
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
-  postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  node(id: ID!): Node
+  name: String
 }
 
 type Subscription {
-  post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  role(where: RoleSubscriptionWhereInput): RoleSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  userRole(where: UserRoleSubscriptionWhereInput): UserRoleSubscriptionPayload
 }
 
 type User {
@@ -337,7 +232,9 @@ type User {
   email: String!
   password: String!
   name: String!
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  userRoles(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserRole!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -350,15 +247,15 @@ input UserCreateInput {
   email: String!
   password: String!
   name: String!
-  posts: PostCreateManyWithoutAuthorInput
+  userRoles: UserRoleCreateManyWithoutUserInput
 }
 
-input UserCreateOneWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
+input UserCreateOneWithoutUserRolesInput {
+  create: UserCreateWithoutUserRolesInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutPostsInput {
+input UserCreateWithoutUserRolesInput {
   email: String!
   password: String!
   name: String!
@@ -389,6 +286,180 @@ type UserPreviousValues {
   email: String!
   password: String!
   name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserRole {
+  id: ID!
+  user: User!
+  role: Role!
+}
+
+type UserRoleConnection {
+  pageInfo: PageInfo!
+  edges: [UserRoleEdge]!
+  aggregate: AggregateUserRole!
+}
+
+input UserRoleCreateInput {
+  user: UserCreateOneWithoutUserRolesInput!
+  role: RoleCreateOneWithoutUserRolesInput!
+}
+
+input UserRoleCreateManyWithoutRoleInput {
+  create: [UserRoleCreateWithoutRoleInput!]
+  connect: [UserRoleWhereUniqueInput!]
+}
+
+input UserRoleCreateManyWithoutUserInput {
+  create: [UserRoleCreateWithoutUserInput!]
+  connect: [UserRoleWhereUniqueInput!]
+}
+
+input UserRoleCreateWithoutRoleInput {
+  user: UserCreateOneWithoutUserRolesInput!
+}
+
+input UserRoleCreateWithoutUserInput {
+  role: RoleCreateOneWithoutUserRolesInput!
+}
+
+type UserRoleEdge {
+  node: UserRole!
+  cursor: String!
+}
+
+enum UserRoleOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserRolePreviousValues {
+  id: ID!
+}
+
+input UserRoleScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  AND: [UserRoleScalarWhereInput!]
+  OR: [UserRoleScalarWhereInput!]
+  NOT: [UserRoleScalarWhereInput!]
+}
+
+type UserRoleSubscriptionPayload {
+  mutation: MutationType!
+  node: UserRole
+  updatedFields: [String!]
+  previousValues: UserRolePreviousValues
+}
+
+input UserRoleSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserRoleWhereInput
+  AND: [UserRoleSubscriptionWhereInput!]
+  OR: [UserRoleSubscriptionWhereInput!]
+  NOT: [UserRoleSubscriptionWhereInput!]
+}
+
+input UserRoleUpdateInput {
+  user: UserUpdateOneRequiredWithoutUserRolesInput
+  role: RoleUpdateOneRequiredWithoutUserRolesInput
+}
+
+input UserRoleUpdateManyWithoutRoleInput {
+  create: [UserRoleCreateWithoutRoleInput!]
+  delete: [UserRoleWhereUniqueInput!]
+  connect: [UserRoleWhereUniqueInput!]
+  disconnect: [UserRoleWhereUniqueInput!]
+  update: [UserRoleUpdateWithWhereUniqueWithoutRoleInput!]
+  upsert: [UserRoleUpsertWithWhereUniqueWithoutRoleInput!]
+  deleteMany: [UserRoleScalarWhereInput!]
+}
+
+input UserRoleUpdateManyWithoutUserInput {
+  create: [UserRoleCreateWithoutUserInput!]
+  delete: [UserRoleWhereUniqueInput!]
+  connect: [UserRoleWhereUniqueInput!]
+  disconnect: [UserRoleWhereUniqueInput!]
+  update: [UserRoleUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [UserRoleUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [UserRoleScalarWhereInput!]
+}
+
+input UserRoleUpdateWithoutRoleDataInput {
+  user: UserUpdateOneRequiredWithoutUserRolesInput
+}
+
+input UserRoleUpdateWithoutUserDataInput {
+  role: RoleUpdateOneRequiredWithoutUserRolesInput
+}
+
+input UserRoleUpdateWithWhereUniqueWithoutRoleInput {
+  where: UserRoleWhereUniqueInput!
+  data: UserRoleUpdateWithoutRoleDataInput!
+}
+
+input UserRoleUpdateWithWhereUniqueWithoutUserInput {
+  where: UserRoleWhereUniqueInput!
+  data: UserRoleUpdateWithoutUserDataInput!
+}
+
+input UserRoleUpsertWithWhereUniqueWithoutRoleInput {
+  where: UserRoleWhereUniqueInput!
+  update: UserRoleUpdateWithoutRoleDataInput!
+  create: UserRoleCreateWithoutRoleInput!
+}
+
+input UserRoleUpsertWithWhereUniqueWithoutUserInput {
+  where: UserRoleWhereUniqueInput!
+  update: UserRoleUpdateWithoutUserDataInput!
+  create: UserRoleCreateWithoutUserInput!
+}
+
+input UserRoleWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  role: RoleWhereInput
+  AND: [UserRoleWhereInput!]
+  OR: [UserRoleWhereInput!]
+  NOT: [UserRoleWhereInput!]
+}
+
+input UserRoleWhereUniqueInput {
+  id: ID
 }
 
 type UserSubscriptionPayload {
@@ -413,7 +484,7 @@ input UserUpdateInput {
   email: String
   password: String
   name: String
-  posts: PostUpdateManyWithoutAuthorInput
+  userRoles: UserRoleUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -422,22 +493,22 @@ input UserUpdateManyMutationInput {
   name: String
 }
 
-input UserUpdateOneRequiredWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
-  update: UserUpdateWithoutPostsDataInput
-  upsert: UserUpsertWithoutPostsInput
+input UserUpdateOneRequiredWithoutUserRolesInput {
+  create: UserCreateWithoutUserRolesInput
+  update: UserUpdateWithoutUserRolesDataInput
+  upsert: UserUpsertWithoutUserRolesInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutPostsDataInput {
+input UserUpdateWithoutUserRolesDataInput {
   email: String
   password: String
   name: String
 }
 
-input UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput!
-  create: UserCreateWithoutPostsInput!
+input UserUpsertWithoutUserRolesInput {
+  update: UserUpdateWithoutUserRolesDataInput!
+  create: UserCreateWithoutUserRolesInput!
 }
 
 input UserWhereInput {
@@ -497,9 +568,25 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  posts_every: PostWhereInput
-  posts_some: PostWhereInput
-  posts_none: PostWhereInput
+  userRoles_every: UserRoleWhereInput
+  userRoles_some: UserRoleWhereInput
+  userRoles_none: UserRoleWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

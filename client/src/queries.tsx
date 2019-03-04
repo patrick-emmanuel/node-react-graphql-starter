@@ -35,7 +35,8 @@ export function TypedQuery<TData, TVariables>(query: DocumentNode) {
   return ({
     children,
     skip,
-    variables
+    variables,
+    displayLoader
   }: TypedQueryInnerProps<TData, TVariables>) => (
     <StrictTypedQuery
       fetchPolicy="cache-and-network"

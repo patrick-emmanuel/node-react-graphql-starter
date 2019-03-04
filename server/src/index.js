@@ -5,7 +5,7 @@ const cors = require('cors');
 const http = require('http');
 const { ApolloServer } = require('apollo-server-express');
 const { prisma } = require('./generated/prisma-client');
-const resolvers = require('./resolvers')
+import resolvers from './resolvers'
 import typeDefs from './schema'
 
 const app = express();

@@ -10,8 +10,9 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
-  post: (where?: PostWhereInput) => Promise<boolean>;
+  role: (where?: RoleWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
+  userRole: (where?: UserRoleWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -33,25 +34,25 @@ export interface Prisma {
    * Queries
    */
 
-  post: (where: PostWhereUniqueInput) => PostPromise;
-  posts: (args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  role: (where: RoleWhereUniqueInput) => RolePromise;
+  roles: (args?: {
+    where?: RoleWhereInput;
+    orderBy?: RoleOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Post>;
-  postsConnection: (args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  }) => FragmentableArray<Role>;
+  rolesConnection: (args?: {
+    where?: RoleWhereInput;
+    orderBy?: RoleOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => PostConnectionPromise;
+  }) => RoleConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -71,28 +72,47 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => UserConnectionPromise;
+  userRole: (where: UserRoleWhereUniqueInput) => UserRolePromise;
+  userRoles: (args?: {
+    where?: UserRoleWhereInput;
+    orderBy?: UserRoleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<UserRole>;
+  userRolesConnection: (args?: {
+    where?: UserRoleWhereInput;
+    orderBy?: UserRoleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserRoleConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
-  createPost: (data: PostCreateInput) => PostPromise;
-  updatePost: (args: {
-    data: PostUpdateInput;
-    where: PostWhereUniqueInput;
-  }) => PostPromise;
-  updateManyPosts: (args: {
-    data: PostUpdateManyMutationInput;
-    where?: PostWhereInput;
+  createRole: (data: RoleCreateInput) => RolePromise;
+  updateRole: (args: {
+    data: RoleUpdateInput;
+    where: RoleWhereUniqueInput;
+  }) => RolePromise;
+  updateManyRoles: (args: {
+    data: RoleUpdateManyMutationInput;
+    where?: RoleWhereInput;
   }) => BatchPayloadPromise;
-  upsertPost: (args: {
-    where: PostWhereUniqueInput;
-    create: PostCreateInput;
-    update: PostUpdateInput;
-  }) => PostPromise;
-  deletePost: (where: PostWhereUniqueInput) => PostPromise;
-  deleteManyPosts: (where?: PostWhereInput) => BatchPayloadPromise;
+  upsertRole: (args: {
+    where: RoleWhereUniqueInput;
+    create: RoleCreateInput;
+    update: RoleUpdateInput;
+  }) => RolePromise;
+  deleteRole: (where: RoleWhereUniqueInput) => RolePromise;
+  deleteManyRoles: (where?: RoleWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -109,6 +129,18 @@ export interface Prisma {
   }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  createUserRole: (data: UserRoleCreateInput) => UserRolePromise;
+  updateUserRole: (args: {
+    data: UserRoleUpdateInput;
+    where: UserRoleWhereUniqueInput;
+  }) => UserRolePromise;
+  upsertUserRole: (args: {
+    where: UserRoleWhereUniqueInput;
+    create: UserRoleCreateInput;
+    update: UserRoleUpdateInput;
+  }) => UserRolePromise;
+  deleteUserRole: (where: UserRoleWhereUniqueInput) => UserRolePromise;
+  deleteManyUserRoles: (where?: UserRoleWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -118,12 +150,15 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  post: (
-    where?: PostSubscriptionWhereInput
-  ) => PostSubscriptionPayloadSubscription;
+  role: (
+    where?: RoleSubscriptionWhereInput
+  ) => RoleSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
+  userRole: (
+    where?: UserRoleSubscriptionWhereInput
+  ) => UserRoleSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -134,19 +169,23 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type PostOrderByInput =
+export type UserRoleOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "published_ASC"
-  | "published_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "content_ASC"
-  | "content_DESC";
+  | "updatedAt_DESC";
+
+export type RoleOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -164,49 +203,238 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserUpdateOneRequiredWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
-  update?: UserUpdateWithoutPostsDataInput;
-  upsert?: UserUpsertWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
+export interface UserRoleUpdateWithWhereUniqueWithoutRoleInput {
+  where: UserRoleWhereUniqueInput;
+  data: UserRoleUpdateWithoutRoleDataInput;
 }
 
-export type PostWhereUniqueInput = AtLeastOne<{
+export type RoleWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  name?: String;
 }>;
 
-export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutAuthorDataInput;
+export interface RoleCreateWithoutUserRolesInput {
+  name: String;
 }
 
 export interface UserCreateInput {
   email: String;
   password: String;
   name: String;
-  posts?: PostCreateManyWithoutAuthorInput;
+  userRoles?: UserRoleCreateManyWithoutUserInput;
 }
 
-export interface PostUpdateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
-  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+export interface UserUpdateWithoutUserRolesDataInput {
+  email?: String;
+  password?: String;
+  name?: String;
+}
+
+export interface UserRoleSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserRoleWhereInput;
+  AND?: UserRoleSubscriptionWhereInput[] | UserRoleSubscriptionWhereInput;
+  OR?: UserRoleSubscriptionWhereInput[] | UserRoleSubscriptionWhereInput;
+  NOT?: UserRoleSubscriptionWhereInput[] | UserRoleSubscriptionWhereInput;
+}
+
+export interface RoleCreateInput {
+  name: String;
+  userRoles?: UserRoleCreateManyWithoutRoleInput;
+}
+
+export interface RoleSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: RoleWhereInput;
+  AND?: RoleSubscriptionWhereInput[] | RoleSubscriptionWhereInput;
+  OR?: RoleSubscriptionWhereInput[] | RoleSubscriptionWhereInput;
+  NOT?: RoleSubscriptionWhereInput[] | RoleSubscriptionWhereInput;
+}
+
+export interface UserRoleCreateManyWithoutRoleInput {
+  create?: UserRoleCreateWithoutRoleInput[] | UserRoleCreateWithoutRoleInput;
+  connect?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
+}
+
+export interface UserRoleUpdateInput {
+  user?: UserUpdateOneRequiredWithoutUserRolesInput;
+  role?: RoleUpdateOneRequiredWithoutUserRolesInput;
+}
+
+export interface UserRoleCreateWithoutRoleInput {
+  user: UserCreateOneWithoutUserRolesInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: String;
+  password?: String;
+  name?: String;
+}
+
+export interface UserCreateOneWithoutUserRolesInput {
+  create?: UserCreateWithoutUserRolesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface RoleUpsertWithoutUserRolesInput {
+  update: RoleUpdateWithoutUserRolesDataInput;
+  create: RoleCreateWithoutUserRolesInput;
+}
+
+export interface UserCreateWithoutUserRolesInput {
+  email: String;
+  password: String;
+  name: String;
+}
+
+export interface RoleUpdateWithoutUserRolesDataInput {
+  name?: String;
+}
+
+export interface RoleUpdateInput {
+  name?: String;
+  userRoles?: UserRoleUpdateManyWithoutRoleInput;
+}
+
+export interface UserRoleUpdateWithoutUserDataInput {
+  role?: RoleUpdateOneRequiredWithoutUserRolesInput;
+}
+
+export interface UserRoleUpdateManyWithoutRoleInput {
+  create?: UserRoleCreateWithoutRoleInput[] | UserRoleCreateWithoutRoleInput;
+  delete?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
+  connect?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
+  disconnect?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
   update?:
-    | PostUpdateWithWhereUniqueWithoutAuthorInput[]
-    | PostUpdateWithWhereUniqueWithoutAuthorInput;
+    | UserRoleUpdateWithWhereUniqueWithoutRoleInput[]
+    | UserRoleUpdateWithWhereUniqueWithoutRoleInput;
   upsert?:
-    | PostUpsertWithWhereUniqueWithoutAuthorInput[]
-    | PostUpsertWithWhereUniqueWithoutAuthorInput;
-  deleteMany?: PostScalarWhereInput[] | PostScalarWhereInput;
-  updateMany?:
-    | PostUpdateManyWithWhereNestedInput[]
-    | PostUpdateManyWithWhereNestedInput;
+    | UserRoleUpsertWithWhereUniqueWithoutRoleInput[]
+    | UserRoleUpsertWithWhereUniqueWithoutRoleInput;
+  deleteMany?: UserRoleScalarWhereInput[] | UserRoleScalarWhereInput;
 }
 
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
+export type UserRoleWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface RoleCreateOneWithoutUserRolesInput {
+  create?: RoleCreateWithoutUserRolesInput;
+  connect?: RoleWhereUniqueInput;
+}
+
+export interface UserUpdateInput {
+  email?: String;
+  password?: String;
+  name?: String;
+  userRoles?: UserRoleUpdateManyWithoutUserInput;
+}
+
+export interface UserRoleUpdateWithoutRoleDataInput {
+  user?: UserUpdateOneRequiredWithoutUserRolesInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface UserUpdateOneRequiredWithoutUserRolesInput {
+  create?: UserCreateWithoutUserRolesInput;
+  update?: UserUpdateWithoutUserRolesDataInput;
+  upsert?: UserUpsertWithoutUserRolesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserRoleCreateInput {
+  user: UserCreateOneWithoutUserRolesInput;
+  role: RoleCreateOneWithoutUserRolesInput;
+}
+
+export interface RoleWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  userRoles_every?: UserRoleWhereInput;
+  userRoles_some?: UserRoleWhereInput;
+  userRoles_none?: UserRoleWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  AND?: RoleWhereInput[] | RoleWhereInput;
+  OR?: RoleWhereInput[] | RoleWhereInput;
+  NOT?: RoleWhereInput[] | RoleWhereInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
+export interface UserUpsertWithoutUserRolesInput {
+  update: UserUpdateWithoutUserRolesDataInput;
+  create: UserCreateWithoutUserRolesInput;
+}
+
+export interface UserRoleUpdateWithWhereUniqueWithoutUserInput {
+  where: UserRoleWhereUniqueInput;
+  data: UserRoleUpdateWithoutUserDataInput;
+}
+
+export interface UserRoleUpsertWithWhereUniqueWithoutRoleInput {
+  where: UserRoleWhereUniqueInput;
+  update: UserRoleUpdateWithoutRoleDataInput;
+  create: UserRoleCreateWithoutRoleInput;
 }
 
 export interface UserWhereInput {
@@ -266,44 +494,44 @@ export interface UserWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  posts_every?: PostWhereInput;
-  posts_some?: PostWhereInput;
-  posts_none?: PostWhereInput;
+  userRoles_every?: UserRoleWhereInput;
+  userRoles_some?: UserRoleWhereInput;
+  userRoles_none?: UserRoleWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface PostSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PostWhereInput;
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+export interface UserRoleCreateManyWithoutUserInput {
+  create?: UserRoleCreateWithoutUserInput[] | UserRoleCreateWithoutUserInput;
+  connect?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
 }
 
-export interface PostCreateInput {
-  published?: Boolean;
-  title: String;
-  content: String;
-  author: UserCreateOneWithoutPostsInput;
+export interface UserRoleCreateWithoutUserInput {
+  role: RoleCreateOneWithoutUserRolesInput;
 }
 
-export interface PostUpdateManyDataInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
+export interface RoleUpdateManyMutationInput {
+  name?: String;
 }
 
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface PostScalarWhereInput {
+export interface UserRoleScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -318,77 +546,12 @@ export interface PostScalarWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  published?: Boolean;
-  published_not?: Boolean;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  content?: String;
-  content_not?: String;
-  content_in?: String[] | String;
-  content_not_in?: String[] | String;
-  content_lt?: String;
-  content_lte?: String;
-  content_gt?: String;
-  content_gte?: String;
-  content_contains?: String;
-  content_not_contains?: String;
-  content_starts_with?: String;
-  content_not_starts_with?: String;
-  content_ends_with?: String;
-  content_not_ends_with?: String;
-  AND?: PostScalarWhereInput[] | PostScalarWhereInput;
-  OR?: PostScalarWhereInput[] | PostScalarWhereInput;
-  NOT?: PostScalarWhereInput[] | PostScalarWhereInput;
+  AND?: UserRoleScalarWhereInput[] | UserRoleScalarWhereInput;
+  OR?: UserRoleScalarWhereInput[] | UserRoleScalarWhereInput;
+  NOT?: UserRoleScalarWhereInput[] | UserRoleScalarWhereInput;
 }
 
-export interface UserCreateWithoutPostsInput {
-  email: String;
-  password: String;
-  name: String;
-}
-
-export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  update: PostUpdateWithoutAuthorDataInput;
-  create: PostCreateWithoutAuthorInput;
-}
-
-export interface PostUpdateInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-  author?: UserUpdateOneRequiredWithoutPostsInput;
-}
-
-export interface PostWhereInput {
+export interface UserRoleWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -403,241 +566,73 @@ export interface PostWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  published?: Boolean;
-  published_not?: Boolean;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  content?: String;
-  content_not?: String;
-  content_in?: String[] | String;
-  content_not_in?: String[] | String;
-  content_lt?: String;
-  content_lte?: String;
-  content_gt?: String;
-  content_gte?: String;
-  content_contains?: String;
-  content_not_contains?: String;
-  content_starts_with?: String;
-  content_not_starts_with?: String;
-  content_ends_with?: String;
-  content_not_ends_with?: String;
-  author?: UserWhereInput;
-  AND?: PostWhereInput[] | PostWhereInput;
-  OR?: PostWhereInput[] | PostWhereInput;
-  NOT?: PostWhereInput[] | PostWhereInput;
+  user?: UserWhereInput;
+  role?: RoleWhereInput;
+  AND?: UserRoleWhereInput[] | UserRoleWhereInput;
+  OR?: UserRoleWhereInput[] | UserRoleWhereInput;
+  NOT?: UserRoleWhereInput[] | UserRoleWhereInput;
 }
 
-export interface UserUpdateInput {
-  email?: String;
-  password?: String;
-  name?: String;
-  posts?: PostUpdateManyWithoutAuthorInput;
+export interface UserRoleUpdateManyWithoutUserInput {
+  create?: UserRoleCreateWithoutUserInput[] | UserRoleCreateWithoutUserInput;
+  delete?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
+  connect?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
+  disconnect?: UserRoleWhereUniqueInput[] | UserRoleWhereUniqueInput;
+  update?:
+    | UserRoleUpdateWithWhereUniqueWithoutUserInput[]
+    | UserRoleUpdateWithWhereUniqueWithoutUserInput;
+  upsert?:
+    | UserRoleUpsertWithWhereUniqueWithoutUserInput[]
+    | UserRoleUpsertWithWhereUniqueWithoutUserInput;
+  deleteMany?: UserRoleScalarWhereInput[] | UserRoleScalarWhereInput;
 }
 
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  password?: String;
-  name?: String;
+export interface RoleUpdateOneRequiredWithoutUserRolesInput {
+  create?: RoleCreateWithoutUserRolesInput;
+  update?: RoleUpdateWithoutUserRolesDataInput;
+  upsert?: RoleUpsertWithoutUserRolesInput;
+  connect?: RoleWhereUniqueInput;
 }
 
-export interface PostCreateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+export interface UserRoleUpsertWithWhereUniqueWithoutUserInput {
+  where: UserRoleWhereUniqueInput;
+  update: UserRoleUpdateWithoutUserDataInput;
+  create: UserRoleCreateWithoutUserInput;
 }
-
-export interface PostUpdateManyMutationInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-}
-
-export interface PostCreateWithoutAuthorInput {
-  published?: Boolean;
-  title: String;
-  content: String;
-}
-
-export interface UserUpdateWithoutPostsDataInput {
-  email?: String;
-  password?: String;
-  name?: String;
-}
-
-export interface PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput;
-  data: PostUpdateManyDataInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface PostUpdateWithoutAuthorDataInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface UserPreviousValues {
+export interface UserRolePreviousValues {
   id: ID_Output;
-  email: String;
-  password: String;
-  name: String;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface UserRolePreviousValuesPromise
+  extends Promise<UserRolePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  name: () => Promise<String>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface UserRolePreviousValuesSubscription
+  extends Promise<AsyncIterator<UserRolePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PostPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  published: Boolean;
-  title: String;
-  content: String;
-}
-
-export interface PostPreviousValuesPromise
-  extends Promise<PostPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  published: () => Promise<Boolean>;
-  title: () => Promise<String>;
-  content: () => Promise<String>;
-}
-
-export interface PostPreviousValuesSubscription
-  extends Promise<AsyncIterator<PostPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  title: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Post {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  published: Boolean;
-  title: String;
-  content: String;
-}
-
-export interface PostPromise extends Promise<Post>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  published: () => Promise<Boolean>;
-  title: () => Promise<String>;
-  content: () => Promise<String>;
-  author: <T = UserPromise>() => T;
-}
-
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  title: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
-  author: <T = UserSubscription>() => T;
-}
-
-export interface AggregatePost {
-  count: Int;
-}
-
-export interface AggregatePostPromise
-  extends Promise<AggregatePost>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePostSubscription
-  extends Promise<AsyncIterator<AggregatePost>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PostEdge {
+export interface RoleEdge {
   cursor: String;
 }
 
-export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
-  node: <T = PostPromise>() => T;
+export interface RoleEdgePromise extends Promise<RoleEdge>, Fragmentable {
+  node: <T = RolePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface PostEdgeSubscription
-  extends Promise<AsyncIterator<PostEdge>>,
+export interface RoleEdgeSubscription
+  extends Promise<AsyncIterator<RoleEdge>>,
     Fragmentable {
-  node: <T = PostSubscription>() => T;
+  node: <T = RoleSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -664,45 +659,36 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface PostSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
+export interface BatchPayload {
+  count: Long;
 }
 
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
+  count: () => Promise<Long>;
 }
 
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface PostConnection {}
-
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
+export interface AggregateUserRole {
+  count: Int;
 }
 
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
+export interface AggregateUserRolePromise
+  extends Promise<AggregateUserRole>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserRoleSubscription
+  extends Promise<AsyncIterator<AggregateUserRole>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PageInfo {
@@ -728,36 +714,56 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BatchPayload {
-  count: Long;
-}
+export interface UserRoleConnection {}
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface UserRoleConnectionPromise
+  extends Promise<UserRoleConnection>,
     Fragmentable {
-  count: () => Promise<Long>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserRoleEdge>>() => T;
+  aggregate: <T = AggregateUserRolePromise>() => T;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface UserRoleConnectionSubscription
+  extends Promise<AsyncIterator<UserRoleConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserRoleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserRoleSubscription>() => T;
 }
 
-export interface AggregateUser {
-  count: Int;
-}
+export interface RoleConnection {}
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface RoleConnectionPromise
+  extends Promise<RoleConnection>,
     Fragmentable {
-  count: () => Promise<Int>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RoleEdge>>() => T;
+  aggregate: <T = AggregateRolePromise>() => T;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface RoleConnectionSubscription
+  extends Promise<AsyncIterator<RoleConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RoleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRoleSubscription>() => T;
+}
+
+export interface UserEdge {
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface User {
@@ -765,6 +771,8 @@ export interface User {
   email: String;
   password: String;
   name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -772,15 +780,17 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   email: () => Promise<String>;
   password: () => Promise<String>;
   name: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  userRoles: <T = FragmentableArray<UserRole>>(args?: {
+    where?: UserRoleWhereInput;
+    orderBy?: UserRoleOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface UserSubscription
@@ -790,15 +800,171 @@ export interface UserSubscription
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
-  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  userRoles: <T = Promise<AsyncIterator<UserRoleSubscription>>>(args?: {
+    where?: UserRoleWhereInput;
+    orderBy?: UserRoleOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface Role {
+  id: ID_Output;
+  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface RolePromise extends Promise<Role>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  userRoles: <T = FragmentableArray<UserRole>>(args?: {
+    where?: UserRoleWhereInput;
+    orderBy?: UserRoleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface RoleSubscription
+  extends Promise<AsyncIterator<Role>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  userRoles: <T = Promise<AsyncIterator<UserRoleSubscription>>>(args?: {
+    where?: UserRoleWhereInput;
+    orderBy?: UserRoleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserRole {
+  id: ID_Output;
+}
+
+export interface UserRolePromise extends Promise<UserRole>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  role: <T = RolePromise>() => T;
+}
+
+export interface UserRoleSubscription
+  extends Promise<AsyncIterator<UserRole>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  role: <T = RoleSubscription>() => T;
+}
+
+export interface RolePreviousValues {
+  id: ID_Output;
+  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface RolePreviousValuesPromise
+  extends Promise<RolePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface RolePreviousValuesSubscription
+  extends Promise<AsyncIterator<RolePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface RoleSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface RoleSubscriptionPayloadPromise
+  extends Promise<RoleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RolePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RolePreviousValuesPromise>() => T;
+}
+
+export interface RoleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RoleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RoleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RolePreviousValuesSubscription>() => T;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  email: String;
+  password: String;
+  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface AggregateRole {
+  count: Int;
+}
+
+export interface AggregateRolePromise
+  extends Promise<AggregateRole>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRoleSubscription
+  extends Promise<AsyncIterator<AggregateRole>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserConnection {}
@@ -819,34 +985,62 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface UserEdge {
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserRoleEdge {
   cursor: String;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
+export interface UserRoleEdgePromise
+  extends Promise<UserRoleEdge>,
+    Fragmentable {
+  node: <T = UserRolePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface UserRoleEdgeSubscription
+  extends Promise<AsyncIterator<UserRoleEdge>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
+  node: <T = UserRoleSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
+export interface UserRoleSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
 
-export type Long = string;
+export interface UserRoleSubscriptionPayloadPromise
+  extends Promise<UserRoleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserRolePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserRolePreviousValuesPromise>() => T;
+}
 
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
+export interface UserRoleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserRoleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserRoleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserRolePreviousValuesSubscription>() => T;
+}
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -863,10 +1057,23 @@ DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
 
+export type Long = string;
+
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /**
  * Model Metadata
@@ -874,11 +1081,15 @@ export type Int = number;
 
 export const models = [
   {
-    name: "Post",
+    name: "Role",
     embedded: false
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "UserRole",
     embedded: false
   }
 ];

@@ -3,6 +3,64 @@
 exports[`Storyshots auth / Login / LoginForm default 1`] = `
 <div>
   <section>
+    <div
+      className="bg-red white"
+    />
+    <form
+      onSubmit={[Function]}
+    >
+      <div>
+        <label>
+          Email
+        </label>
+        <input
+          name="email"
+          onChange={[Function]}
+          type="email"
+          value=""
+        />
+      </div>
+      <div>
+        <label>
+          Password
+        </label>
+        <input
+          minLength={6}
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div>
+        <button
+          disabled={false}
+        >
+          Login
+        </button>
+      </div>
+      <span>
+        or
+      </span>
+      <a
+        href="/signup"
+        onClick={[Function]}
+      >
+        Register
+      </a>
+    </form>
+  </section>
+</div>
+`;
+
+exports[`Storyshots auth / Login / LoginForm on error 1`] = `
+<div>
+  <section>
+    <div
+      className="bg-red white"
+    >
+      Invalid credentials
+    </div>
     <form
       onSubmit={[Function]}
     >
@@ -53,6 +111,9 @@ exports[`Storyshots auth / Login / LoginForm default 1`] = `
 exports[`Storyshots auth / Login / LoginForm on loading 1`] = `
 <div>
   <section>
+    <div
+      className="bg-red white"
+    />
     <form
       onSubmit={[Function]}
     >
@@ -103,6 +164,64 @@ exports[`Storyshots auth / Login / LoginForm on loading 1`] = `
 exports[`Storyshots auth / SignUp / SignUpForm default 1`] = `
 <div>
   <section>
+    <div
+      className="bg-red white"
+    />
+    <form
+      onSubmit={[Function]}
+    >
+      <div>
+        <label>
+          Name:
+        </label>
+        <input
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div>
+        <label>
+          Email
+        </label>
+        <input
+          name="email"
+          onChange={[Function]}
+          type="email"
+          value=""
+        />
+      </div>
+      <div>
+        <label>
+          Password (6 minimum characters)
+        </label>
+        <input
+          minLength={6}
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div>
+        <button
+          disabled={false}
+        >
+          Sign up
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+`;
+
+exports[`Storyshots auth / SignUp / SignUpForm on error 1`] = `
+<div>
+  <section>
+    <div
+      className="bg-red white"
+    />
     <form
       onSubmit={[Function]}
     >
@@ -155,6 +274,9 @@ exports[`Storyshots auth / SignUp / SignUpForm default 1`] = `
 exports[`Storyshots auth / SignUp / SignUpForm on loading 1`] = `
 <div>
   <section>
+    <div
+      className="bg-red white"
+    />
     <form
       onSubmit={[Function]}
     >

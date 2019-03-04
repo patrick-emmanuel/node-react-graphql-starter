@@ -13,7 +13,8 @@ interface AuthContext {
   signUpLoading: boolean;
   loginLoading: boolean;
   user: User;
-  error: ApolloError;
+  signUpError: ApolloError;
+  loginError: ApolloError;
 }
 
 export const AuthContext = React.createContext<AuthContext>({
@@ -24,5 +25,6 @@ export const AuthContext = React.createContext<AuthContext>({
   verifyAuthLoading: false,
   signUpLoading: false,
   user: undefined,
-  error: null
+  signUpError: null,
+  loginError: null
 });

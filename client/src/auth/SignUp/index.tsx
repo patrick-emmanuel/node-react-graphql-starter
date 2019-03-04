@@ -4,8 +4,10 @@ import { AuthContext } from '../AuthProvider/context';
 
 const SignUp = () => {
   const value = useContext(AuthContext);
-  const { signUp, signUpLoading, error } = value;
-  return <SignUpForm signUp={signUp} loading={signUpLoading} error={error} />;
+  const { signUp, signUpLoading, signUpError } = value;
+  return (
+    <SignUpForm signUp={signUp} loading={signUpLoading} error={signUpError} />
+  );
 };
 
 export default SignUp;

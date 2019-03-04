@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormInput } from '../../utils/customHooks';
 import { SignUpVariables } from '../types/SignUp';
 import { ApolloError } from 'apollo-client';
+import { formatSignUpError } from './utils';
 
 export interface SignUpFormProps {
   signUp: (variables: SignUpVariables) => void;
@@ -29,7 +30,7 @@ const SignUpForm: React.StatelessComponent<SignUpFormProps> = ({
 
   return (
     <section>
-      <div className="bg-red white">{error && error.message.split(':')[1]}</div>
+      <div className="bg-red white">{error && formatSignUpError(error)}</div>
       <form onSubmit={handleRegister}>
         <div>
           <label>Name:</label>

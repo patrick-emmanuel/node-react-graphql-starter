@@ -39,7 +39,8 @@ const AuthProvider: React.StatelessComponent<AuthProviderProps> = ({
       value={{
         login: login.mutate,
         signUp: signUp.mutate,
-        error: signUp.result.error || login.result.error,
+        signUpError: signUp.result.error,
+        loginError: login.result.error,
         loginLoading: login.result.loading,
         signUpLoading: signUp.result.loading,
         verifyAuthLoading: verifyUser.result.loading,
