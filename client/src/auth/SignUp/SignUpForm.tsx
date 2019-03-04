@@ -29,7 +29,7 @@ const SignUpForm: React.StatelessComponent<SignUpFormProps> = ({
 
   return (
     <section>
-      <div className="bg-red white">{error && error.message}</div>
+      <div className="bg-red white">{error && error.message.split(':')[1]}</div>
       <form onSubmit={handleRegister}>
         <div>
           <label>Name:</label>

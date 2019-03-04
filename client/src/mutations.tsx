@@ -24,7 +24,6 @@ export function TypedMutation<TData, TVariables>(
   update?: MutationUpdaterFn<TData>
 ) {
   class StrictTypedMutation extends Mutation<TData, TVariables> {}
-  const value = React.useContext(MessageContext);
   return ({
     children,
     onCompleted,
@@ -35,7 +34,7 @@ export function TypedMutation<TData, TVariables>(
       mutation={mutation}
       onCompleted={onCompleted}
       onError={error => {
-        value.pushMessage(error.message, true);
+        //value.pushMessage(error.message, true);
         if (onError) {
           onError(error);
         }

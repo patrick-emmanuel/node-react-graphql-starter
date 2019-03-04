@@ -28,7 +28,7 @@ const LoginForm: React.StatelessComponent<LoginFormProps> = ({
 
   return (
     <section>
-      <div className="bg-red white">{error && error.message}</div>
+      <div className="bg-red white">{error && error.message.split(':')[1]}</div>
       <form onSubmit={handleLogin}>
         <div>
           <label>Email</label>
