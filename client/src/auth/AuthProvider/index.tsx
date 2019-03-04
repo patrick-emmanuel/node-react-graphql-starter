@@ -23,7 +23,7 @@ interface AuthProviderOperationsProps extends RouteComponentProps {
 const AuthProviderOperations: React.StatelessComponent<
   AuthProviderOperationsProps
 > = ({ children, history }) => {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState<User>(null);
 
   const onLoginCompleted = (data: Login) => {
     const { user, token } = data.login;
@@ -47,7 +47,7 @@ const AuthProviderOperations: React.StatelessComponent<
   };
 
   const onError = (error: ApolloError) => {
-    logout();
+    removeAuthToken();
   };
 
   const logout = () => {

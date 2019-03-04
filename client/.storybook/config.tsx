@@ -17,6 +17,6 @@ function loadStories() {
   require('../src/stories/auth/SignUp/SignUpForm.stories');
 
   //components
-  require('../src/stories/components/Messages/Messages.stories');
+  //require('../src/stories/components/Messages/Messages.stories');
 }
 configure(loadStories, module);

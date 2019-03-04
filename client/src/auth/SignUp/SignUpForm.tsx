@@ -1,15 +1,18 @@
 import React from 'react';
 import { useFormInput } from '../../utils/customHooks';
 import { SignUpVariables } from '../types/SignUp';
+import { ApolloError } from 'apollo-client';
 
 export interface SignUpFormProps {
   signUp: (variables: SignUpVariables) => void;
   loading: boolean;
+  error: ApolloError;
 }
 
 const SignUpForm: React.StatelessComponent<SignUpFormProps> = ({
   signUp,
-  loading
+  loading,
+  error
 }) => {
   const email = useFormInput('');
   const name = useFormInput('');
@@ -26,6 +29,7 @@ const SignUpForm: React.StatelessComponent<SignUpFormProps> = ({
 
   return (
     <section>
+      <div className="bg-red white">{error && error.message}</div>
       <form onSubmit={handleRegister}>
         <div>
           <label>Name:</label>

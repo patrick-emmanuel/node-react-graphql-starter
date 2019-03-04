@@ -4,8 +4,8 @@ import { AuthContext } from '../AuthProvider/context';
 
 const Login = () => {
   const value = useContext(AuthContext);
-  const { login, loginLoading } = value;
-  return <LoginForm login={login} loading={loginLoading} />;
+  const { login, loginLoading, error } = value;
+  return <LoginForm login={login} loading={loginLoading} error={error} />;
 };
 
 export default Login;

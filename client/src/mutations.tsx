@@ -7,6 +7,7 @@ import {
   MutationResult,
   MutationUpdaterFn
 } from 'react-apollo';
+import MessageContext from './components/Messages';
 
 export interface TypedMutationInnerProps<TData, TVariables> {
   children: (
@@ -23,6 +24,7 @@ export function TypedMutation<TData, TVariables>(
   update?: MutationUpdaterFn<TData>
 ) {
   class StrictTypedMutation extends Mutation<TData, TVariables> {}
+  const value = React.useContext(MessageContext);
   return ({
     children,
     onCompleted,
@@ -32,10 +34,10 @@ export function TypedMutation<TData, TVariables>(
     <StrictTypedMutation
       mutation={mutation}
       onCompleted={onCompleted}
-      onError={err => {
-        // Do toastr here.
+      onError={error => {
+        value.pushMessage(error.message, true);
         if (onError) {
-          onError(err);
+          onError(error);
         }
       }}
       variables={variables}

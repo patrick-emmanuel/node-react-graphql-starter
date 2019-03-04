@@ -1,40 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
-import './styles.css';
+import { useState, useEffect } from 'react';
+import { createContext } from 'react';
+import { Message } from './Message';
 
-export interface MessageProps {
-  body: string;
-  error: boolean;
-}
+export const useMessage = () => {
+  const [text, setText] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
+  const [opened, setOpened] = useState<boolean>(false);
 
-const Message: React.StatelessComponent<MessageProps> = ({ body, error }) => {
-  const [isTimeout, setIsTimeout] = useState(true);
+  const setMessage = (message: Message) => {
+    const { text, error } = message;
+    setText(text);
+    setError(error);
+  };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsTimeout(false);
-    }, 6000);
+    if (text) {
+      const opened = setTimeout(() => {
+        setOpened(false);
+      }, 3000);
+      return function cleanup() {
+        clearTimeout(opened);
+      };
+    }
+  }, [text]);
 
-    return function cleanup() {
-      clearTimeout(timeout);
-    };
-  });
-
-  let cardStyle = classNames('absolute fade ph3 pv2 white shadow-2', {
-    'bg-dark-red': error,
-    'bg-dark-green': !error
-  });
-
-  if (isTimeout) {
-    return (
-      <div className={cardStyle}>
-        <h4 className="mt1 mb1">{error ? 'Error' : 'Success'}</h4>
-        <p className="f6">{body}</p>
-      </div>
-    );
-  } else {
-    return null;
-  }
+  return {
+    text,
+    error,
+    opened,
+    setOpened,
+    setMessage
+  };
 };
 
-export default Message;
+interface MessageContext {
+  pushMessage: (text: string, error: boolean) => void;
+}
+const MessageContext = createContext<MessageContext>({
+  pushMessage: undefined
+});
+
+export default MessageContext;
+export * from './Message';

@@ -26,5 +26,5 @@ code {
 
 .fade {
   animation-name: fadeInOut;
-  animation-duration: 20s;
+  animation-duration: 10s;
 }

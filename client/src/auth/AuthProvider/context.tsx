@@ -3,6 +3,7 @@ import * as React from 'react';
 import { SignUpVariables } from '../types/SignUp';
 import { LoginVariables } from '../types/Login';
 import { User } from '../types/User';
+import { ApolloError } from 'apollo-client';
 
 interface AuthContext {
   login: (variables: LoginVariables) => void;
@@ -12,6 +13,7 @@ interface AuthContext {
   signUpLoading: boolean;
   loginLoading: boolean;
   user: User;
+  error: ApolloError;
 }
 
 export const AuthContext = React.createContext<AuthContext>({
@@ -21,5 +23,6 @@ export const AuthContext = React.createContext<AuthContext>({
   loginLoading: false,
   verifyAuthLoading: false,
   signUpLoading: false,
-  user: undefined
+  user: undefined,
+  error: null
 });

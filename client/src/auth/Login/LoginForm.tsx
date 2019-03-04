@@ -2,15 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useFormInput } from '../../utils/customHooks';
 import { LoginVariables } from '../types/Login';
+import { ApolloError } from 'apollo-client';
 
 export interface LoginFormProps {
   login: (variables: LoginVariables) => void;
   loading: boolean;
+  error: ApolloError;
 }
 
 const LoginForm: React.StatelessComponent<LoginFormProps> = ({
   login,
-  loading
+  loading,
+  error
 }) => {
   const email = useFormInput('');
   const password = useFormInput('');
@@ -25,6 +28,7 @@ const LoginForm: React.StatelessComponent<LoginFormProps> = ({
 
   return (
     <section>
+      <div className="bg-red white">{error && error.message}</div>
       <form onSubmit={handleLogin}>
         <div>
           <label>Email</label>
