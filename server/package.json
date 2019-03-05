@@ -8,7 +8,7 @@
     "test:run-test": "mocha --require @babel/register 'src/tests/**/*.spec.js'",
     "deploy:dev": "docker-compose exec -e PRISMA_ENDPOINT=http://prisma:4466/api/dev api prisma deploy",
     "deploy:test": "docker-compose exec -e PRISMA_ENDPOINT=http://prisma:4466/api/test api prisma deploy",
-    "test:docker": "docker-compose -f ../docker-compose.yml -f ../docker-compose.test.yml run api",
+    "test:docker": "docker-compose -f ../docker-compose.yml -f ../docker-compose.test.yml exec -e PRISMA_ENDPOINT=http://prisma:4466/api/test api prisma reset --force && docker-compose -f ../docker-compose.yml -f ../docker-compose.test.yml run api",
     "build-types": "npx apollo client:codegen --target=typescript types --globalTypesFile=../client/src/types/globalTypes.ts"
   },
   "dependencies": {

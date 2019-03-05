@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   extend type Query {
-    role(where: RoleWhereUniqueInput!): Role!
+    role(name: String!): Role!
   }
 
   extend type Mutation {
@@ -16,10 +16,5 @@ export default gql`
 
   input RoleCreateInput {
     name: String!
-  }
-
-  input RoleWhereUniqueInput {
-    id: ID
-    name: String
   }
 `;

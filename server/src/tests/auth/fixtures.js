@@ -1,7 +1,5 @@
-import axios from 'axios';
-
-
-const API_URL = 'http://localhost:4000/graphql';
+import axios from "axios";
+import { API_URL } from "../helper";
 
 export const login = async variables =>
   await axios.post(API_URL, {
@@ -12,7 +10,7 @@ export const login = async variables =>
         }
       }
     `,
-    variables,
+    variables
   });
 
 export const loggedInUser = async token =>
@@ -25,15 +23,15 @@ export const loggedInUser = async token =>
             email
           }
         }
-      `,
+      `
     },
     token
       ? {
-        headers: {
-          'Authorization': token,
-        },
-      }
-      : null,
+          headers: {
+            Authorization: token
+          }
+        }
+      : null
   );
 
 export const user = async variables =>
@@ -46,19 +44,7 @@ export const user = async variables =>
         }
       }
     `,
-    variables,
-  });
-
-export const users = async () =>
-  axios.post(API_URL, {
-    query: `
-      {
-        users {
-          name
-          email
-        }
-      }
-    `,
+    variables
   });
 
 export const signUp = async variables =>
@@ -67,22 +53,23 @@ export const signUp = async variables =>
       mutation(
         $email: String!,
         $password: String!,
-        $name: String
+        $name: String!
       ) {
         signup(
           email: $email,
           password: $password
           name: $name
         ) {
-          token
+          user {
+            email
+          }
         }
       }
     `,
-    variables,
+    variables
   });
 
-
-  export const verifyUser = async variables =>
+export const verifyUser = async variables =>
   axios.post(API_URL, {
     query: `
       mutation(
@@ -98,5 +85,5 @@ export const signUp = async variables =>
         }
       }
     `,
-    variables,
+    variables
   });

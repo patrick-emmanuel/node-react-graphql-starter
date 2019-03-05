@@ -1,7 +1,7 @@
 const role = {
-  role(parent, { where }, context) {
-    return context.prisma.roles({ where });
-  },
+  async role(parent, { name }, { prisma }) {
+    return await prisma.role({ name });
+  }
 };
 
 export default role;

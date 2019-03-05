@@ -3,7 +3,7 @@ type User {
   email: String! @unique
   password: String!
   name: String!
-  userRoles: [UserRole!]!
+  userRoles: [UserRole!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }

@@ -57,6 +57,7 @@ services:
     depends_on:
      - postgres-db
   postgres-db:
+    container_name: node_starter_postgres
     image: postgres
     restart: always
     environment:

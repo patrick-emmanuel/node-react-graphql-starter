@@ -1,43 +1,67 @@
-import { expect } from 'chai';
+import bcrypt from "bcryptjs";
+import { expect } from "chai";
+import { prisma } from "../../generated/prisma-client";
+import * as userApi from "./fixtures";
+import "../helper";
 
-import * as userApi from './fixtures';
-import { testServer } from '../../index';
-
-
-describe('auth', function(){
+describe("auth", async function() {
   this.timeout(0);
   this.slow(1000);
-  before(function(){
-    testServer
+
+  const password = await bcrypt.hash("password", 10);
+  const user = await prisma.createUser({
+    name: "Patrick",
+    email: "email@email.com",
+    password
   });
 
-  describe('loggedInUser: User', () => {
-    it('returns null when no user is signed in', async () => {
+  describe("createUser: User", () => {
+    it("should new user", async () => {
+      const email = "patrick@email.com";
+      const expectedResult = {
+        data: {
+          signup: {
+            user: {
+              email: email
+            }
+          }
+        }
+      };
+      const { data } = await userApi.signUp({
+        email: email,
+        name: "Patrick",
+        password: "password"
+      });
+
+      expect(data).to.eql(expectedResult);
+    });
+  });
+
+  describe("loggedInUser: User", () => {
+    it("returns null when no user is signed in", async () => {
       const { data } = await userApi.loggedInUser();
 
-      expect(data.data.loggedInUser).to.be.a('null');
+      expect(data.data.loggedInUser).to.be.a("null");
       expect(data.errors[0].message).to.eql("Not authenticated.");
     });
 
-    it('returns loggedInUser when user is signed in', async () => {
+    it("returns loggedInUser when user is signed in", async () => {
       const expectedResult = {
         data: {
           loggedInUser: {
-            email: 'alice@prisma.io',
-          },
-        },
+            email: user.email
+          }
+        }
       };
       const {
         data: {
           data: {
-            login: { 
-              token 
-            },
-          },
-        },
+            login: { token }
+          }
+        }
       } = await userApi.login({
-        email: 'alice@prisma.io',
-        password: 'secret42',
+        email: user.email,
+        password: "password"
       });
 
       const { data } = await userApi.loggedInUser(token);
@@ -46,60 +70,31 @@ describe('auth', function(){
     });
   });
 
-  describe('users: [User!]', () => {
-    it('returns a list of users', async () => {
-      const expectedResult = {
-        data: {
-          users: [
-            {
-              name: 'Alice',
-              email: 'alice@prisma.io',
-            },
-            {
-              name: 'Bob',
-              email: 'bob@prisma.io',
-            },
-          ],
-        },
-      };
-
-      const result = await userApi.users();
-
-      expect(result.data).to.eql(expectedResult);
-    });
-  });
-
-  describe('verifyUser: AuthPayload', () => {
-    it('verify user token', async () => {
+  describe("verifyUser: AuthPayload", () => {
+    it("verify user token", async () => {
       const {
         data: {
           data: {
-            login: { 
-              token 
-            },
-          },
-        },
+            login: { token }
+          }
+        }
       } = await userApi.login({
-        email: 'alice@prisma.io',
-        password: 'secret42',
+        email: user.email,
+        password: "password"
       });
       const expectedResult = {
         data: {
           verifyUser: {
             token: token,
             user: {
-              email: 'alice@prisma.io',
+              email: user.email
             }
-          },
-        },
+          }
+        }
       };
       const { data } = await userApi.verifyUser({ token });
 
       expect(data).to.eql(expectedResult);
     });
   });
-
-  after(() => {
-    testServer.close();
-  })
 });
