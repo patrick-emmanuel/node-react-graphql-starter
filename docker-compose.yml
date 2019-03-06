@@ -42,7 +42,6 @@ services:
     ports:
      - "4466:4466"
     environment:
-      PRISMA_ENDPOINT: http://prisma:4466
       PRISMA_CONFIG: |
         port: 4466
         # managementApiSecret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNTUwODMzMjI3LCJleHAiOjE1NTE0MzgwMjd9.c5WdayFgkmsxt8O9SkcwBSQdzwtavF3bxNUhpkl6CQQ
