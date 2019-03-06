@@ -4,16 +4,16 @@ www.{$DOMAIN_NAME} {
 
 {$DOMAIN_NAME} {
     proxy / client:3000 {
-        header_upstream Host {host}
-        header_upstream X-Real-IP {remote}
-        header_upstream X-Forwarded-Proto {scheme}
-    }
-    proxy /api api:4000 {
-        header_upstream Host {host}
-        header_upstream X-Real-IP {remote}
-        header_upstream X-Forwarded-Proto {scheme}
-    }
-    log stdout
-    errors stdout
-    gzip
+      websocket
+      transparent
+  }
+  proxy /api api:4000 {
+      without /api
+      websocket
+      transparent
+  }
+  log stdout
+  errors stdout
+  gzip
 }
+
