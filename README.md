@@ -11,7 +11,8 @@
 - **No configuration overhead**: Preconfigured [`graphql-config`](https://github.com/prisma/graphql-config) setup
 - **Storybook JS**: Build and test your components with storybookjs. Learn more [`here`](https://www.storybookjs.org)
 - **Typescript**: Write and ship code with confidence with static typing
-
+- **Docker**: Develop your application in containerized format. Write once, run anywhere.
+- **Caddy server**: Caddy server is setup for proxy and load-balancing
 
 A full-fledged **React, Node and Apollo boilerplate**
 
