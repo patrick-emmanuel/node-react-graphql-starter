@@ -33,10 +33,10 @@ npm install --prefix client && npm install --prefix server
 docker-compose up
 
 # 3. Deploy the prisma service.
-From the root of the app: npm run --prefix server deploy:dev or cd server && npm run deploy:dev
+npm run --prefix server deploy:dev OR cd server && npm run deploy:dev
 
 # 4. View app
-App is running on localhost:4000
+App is running on localhost:2015
 ```
 
 ## Testing
