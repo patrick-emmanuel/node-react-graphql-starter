@@ -28,7 +28,7 @@ npm install --prefix client && npm install --prefix server
 # 2. Start docker
 docker-compose up
 
-# 3. Deploy the prisma service. Learn more [`here`](https:prisma.io)
+# 3. Deploy the prisma service. Learn more [`here`](https://www.prisma.io)
 From the root of the app: npm run --prefix server deploy:dev or cd server && npm run deploy:dev
 
 # 4. View app
@@ -55,6 +55,6 @@ Assuming all commands are being run from the project root
 
 # client
 * `npm run --prefix client test:docker` To test client
-* `npm run --prefix client storybook:docker` To run storybook. Visit localhost:9009 to see it. Learn more about storybook [`here`](https://storybook.js.org/)
+* `npm run --prefix client storybook:docker` To run storybook. Visit localhost:9009 to see it. Learn more about storybook [`here`](https://www.storybookjs.org)
 
 
