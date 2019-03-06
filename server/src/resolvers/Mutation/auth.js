@@ -1,12 +1,33 @@
+import { ApolloError } from "apollo-server-core";
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { AuthenticationError } = require("apollo-server-express");
 
 const auth = {
   async signup(parent, args, { prisma }) {
+    const roleName = "USER";
     const password = await bcrypt.hash(args.password, 10);
     const user = await prisma.createUser({ ...args, password });
-
+    const role = await prisma.role({ name: roleName });
+    if (!role) {
+      await prisma.deleteUser({ email: user.email });
+      return new ApolloError(
+        `Creating user with role: ${roleName}. Role ${roleName} does not exist`
+      );
+    }
+    await prisma.createUserRole({
+      user: {
+        connect: {
+          email: user.email
+        }
+      },
+      role: {
+        connect: {
+          id: role.id
+        }
+      }
+    });
     return {
       token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
       user

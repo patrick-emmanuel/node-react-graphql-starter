@@ -9,15 +9,21 @@ describe("auth", async function() {
   this.slow(1000);
 
   const password = await bcrypt.hash("password", 10);
+  const userRole = "USER";
+  const email = "patrick@email.com";
+
   const user = await prisma.createUser({
     name: "Patrick",
     email: "email@email.com",
     password
   });
 
+  await prisma.createRole({
+    name: userRole
+  });
+
   describe("createUser: User", () => {
     it("should new user", async () => {
-      const email = "patrick@email.com";
       const expectedResult = {
         data: {
           signup: {
@@ -34,6 +40,23 @@ describe("auth", async function() {
       });
 
       expect(data).to.eql(expectedResult);
+    });
+
+    it("it should fail creating user with invalid role", async () => {
+      //delete available roles
+      const userRoles = await prisma.user({ email }).userRoles();
+      await prisma.deleteUserRole({
+        id: userRoles[0].id
+      });
+      await prisma.deleteRole({ name: userRole });
+
+      const { data } = await userApi.signUp({
+        email: "some@email.com",
+        name: "Patrick",
+        password: "password"
+      });
+
+      expect(data.errors[0].message).to.eql("Creating user with role: USER. Role USER does not exist");
     });
   });
 

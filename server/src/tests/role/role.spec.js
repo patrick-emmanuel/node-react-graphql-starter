@@ -7,19 +7,19 @@ describe("role", function() {
   this.timeout(0);
   this.slow(1000);
 
-  const USER = "USER";
+  const SOME_ROLE = "SOME_ROLE";
   describe("createRole: Role", () => {
     it("Create a new role", async () => {
       const expectedResult = {
         data: {
           createRole: {
-            name: USER
+            name: SOME_ROLE
           }
         }
       };
       const { data } = await roleApi.createRole({
         data: {
-          name: USER
+          name: SOME_ROLE
         }
       });
 
@@ -29,7 +29,7 @@ describe("role", function() {
     it("Should not duplicate name", async () => {
       const { data } = await roleApi.createRole({
         data: {
-          name: USER
+          name: SOME_ROLE
         }
       });
 
@@ -41,16 +41,15 @@ describe("role", function() {
 
   describe("role: Role", () => {
     it("Should query role", async () => {
-      const USER = "USER";
       const expectedResult = {
         data: {
           role: {
-            name: USER
+            name: SOME_ROLE
           }
         }
       };
       const { data } = await roleApi.role({
-        name: USER
+        name: SOME_ROLE
       });
 
       expect(data).to.eql(expectedResult);
