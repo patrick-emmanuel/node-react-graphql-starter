@@ -9,6 +9,9 @@
 - **Tooling**: Out-of-the-box support for [GraphQL Playground](https://github.com/prisma/graphql-playground) & [query performance tracing](https://github.com/apollographql/apollo-tracing)
 - **Extensible**: Simple and flexible [data model](./database/datamodel.graphql) – easy to adjust and extend
 - **No configuration overhead**: Preconfigured [`graphql-config`](https://github.com/prisma/graphql-config) setup
+- **Storybook JS**: Build and test your components with storybookjs. Learn more [`here`](https://www.storybookjs.org)
+- **Typescript**: Write and ship code with confidence with static typing
+
 
 A full-fledged **React, Node and Apollo boilerplate**
 
@@ -28,7 +31,7 @@ npm install --prefix client && npm install --prefix server
 # 2. Start docker
 docker-compose up
 
-# 3. Deploy the prisma service. Learn more [`here`](https://www.prisma.io)
+# 3. Deploy the prisma service.
 From the root of the app: npm run --prefix server deploy:dev or cd server && npm run deploy:dev
 
 # 4. View app
@@ -55,6 +58,6 @@ Assuming all commands are being run from the project root
 
 # client
 * `npm run --prefix client test:docker` To test client
-* `npm run --prefix client storybook:docker` To run storybook. Visit localhost:9009 to see it. Learn more about storybook [`here`](https://www.storybookjs.org)
+* `npm run --prefix client storybook:docker` To run storybook. Visit localhost:9009 to see it.
 
 
