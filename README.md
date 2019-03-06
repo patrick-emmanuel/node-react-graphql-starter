@@ -28,13 +28,14 @@ npm install --prefix client && npm install --prefix server
 # 2. Start docker
 docker-compose up
 
-# 3. Deploy the prisma service. Learn more [here](https:prisma.io)
+# 3. Deploy the prisma service. Learn more [`here`](https:prisma.io)
 From the root of the app: npm run --prefix server deploy:dev or cd server && npm run deploy:dev
 
 # 4. View app
 App is running on localhost:4000
 
 # 5. Testing
+
 ## Server:
 To the test the app, deploy prisma test db, and run the tests:
 npm run --prefix server deploy:test or cd server && npm run deploy:test
@@ -45,15 +46,15 @@ npm run --prefix client test:docker
 
 ## Documentation
 
-### Commands
+# Commands
 
 Assuming all commands are being run from the project root
 
-####server
+# server
 * `npm run --prefix server build-types` To generate typescript client types from the graphql server. Ensure the app is running.
 
-####client
+# client
 * `npm run --prefix client test:docker` To test client
-* `npm run --prefix client storybook:docker` To run storybook. Visit localhost:9009 to see it. Learn more about storybook [here](https://storybook.js.org/)
+* `npm run --prefix client storybook:docker` To run storybook. Visit localhost:9009 to see it. Learn more about storybook [`here`](https://storybook.js.org/)
 
 
